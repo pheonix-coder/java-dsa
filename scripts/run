@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+if [ -z "${1-}" ]; then
+  echo "Usage: $0 package/ClassName [args...]"
+  echo "Example: $0 examples/HelloWorld arg1 arg2"
+  exit 1
+fi
+TARGET="$1"; shift
+# convert package/ClassName -> package.ClassName
+CLASS_NAME="${TARGET//\//.}"
+SRC_DIR="src"
+OUT_DIR="bin"
+mkdir -p "$OUT_DIR"
+# compile all java sources under src
+FILES=$(find "$SRC_DIR" -name '*.java' 2>/dev/null || true)
+if [ -n "$FILES" ]; then
+  javac -d "$OUT_DIR" $FILES
+fi
+# run
+exec java -cp "$OUT_DIR" "$CLASS_NAME" "$@"
