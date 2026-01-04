@@ -1,5 +1,7 @@
 package linkedlist;
 
+import java.util.NoSuchElementException;
+
 class Node {
     int data;
     Node next;
@@ -20,15 +22,9 @@ public class LinkedList {
     }
 
     public void addFirst(int data) {
-        if (this.isEmpty()) {
-            this.head = new Node(data);
-            n++;
-            return;
-        }
-
-        Node t = this.head;
-        this.head = new Node(data);
-        this.head.next = t;
+        Node newNode = new Node(data);
+        newNode.next = this.head;
+        this.head = newNode;
         n++;
     }
 
@@ -53,13 +49,11 @@ public class LinkedList {
                 this.addFirst(data);
                 return;
             } else
-                System.out.println("Cant insert data at index " + index);
+                throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + n);
         }
 
-        if (index < 0 || index > n) {
-            System.out.println("Cant insert data at index " + index);
-            return;
-        }
+        if (index < 0 || index > n)
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + n);
 
         if (index == 0) {
             this.addFirst(data);
@@ -89,10 +83,8 @@ public class LinkedList {
     }
 
     public int removeFirst() {
-        if (this.isEmpty()) {
-            System.out.println("Empty LinkedList");
-            return -1;
-        }
+        if (this.isEmpty())
+            throw new NoSuchElementException("LinkedList is empty");
 
         int data = this.head.data;
         this.head = this.head.next;
@@ -101,10 +93,9 @@ public class LinkedList {
     }
 
     public int removeLast() {
-        if (this.isEmpty()) {
-            System.out.println("Empty LinkedList");
-            return -1;
-        }
+        if (this.isEmpty())
+            throw new NoSuchElementException("LinkedList is empty");
+
         if (this.n == 1)
             return this.removeFirst();
 
@@ -120,15 +111,11 @@ public class LinkedList {
     }
 
     public int removeAt(int index) {
-        if (this.isEmpty()) {
-            System.out.println("Empty LinkedList");
-            return -1;
-        }
+        if (this.isEmpty())
+            throw new NoSuchElementException("LinkedList is empty");
 
-        if (index < 0 || index >= n) {
-            System.out.println("Cant remove data at index " + index);
-            return -1;
-        }
+        if (index < 0 || index >= n)
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + n);
 
         if (index == 0)
             return this.removeFirst();
@@ -147,14 +134,12 @@ public class LinkedList {
             i++;
         }
 
-        return -1;
+        throw new IllegalStateException("Unreachable");
     }
 
     public boolean removeValue(int data) {
-        if (this.isEmpty()) {
-            System.out.println("Empty LinkedList");
+        if (this.isEmpty())
             return false;
-        }
 
         if (this.head.data == data) {
             this.removeFirst();
@@ -176,15 +161,11 @@ public class LinkedList {
     }
 
     public int get(int index) {
-        if (this.isEmpty()) {
-            System.out.println("Empty LinkedList");
-            return -1;
-        }
+        if (this.isEmpty())
+            throw new NoSuchElementException("LinkedList is empty");
 
-        if (index < 0 || index >= n) {
-            System.out.println("Cant get data at index " + index);
-            return -1;
-        }
+        if (index < 0 || index >= n)
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + n);
 
         int i = 0;
         Node curr = this.head;
@@ -197,14 +178,12 @@ public class LinkedList {
             i++;
         }
 
-        return -1;
+        throw new IllegalStateException("Unreachable");
     }
 
     public boolean contains(int data) {
-        if (this.isEmpty()) {
-            System.out.println("Empty LinkedList");
+        if (this.isEmpty())
             return false;
-        }
 
         Node curr = this.head;
 
@@ -219,10 +198,8 @@ public class LinkedList {
     }
 
     public int indexOf(int data) {
-        if (this.isEmpty()) {
-            System.out.println("Empty LinkedList");
+        if (this.isEmpty())
             return -1;
-        }
 
         int i = 0;
         Node curr = this.head;
@@ -252,12 +229,12 @@ public class LinkedList {
 
     @Override
     public String toString() {
-        if (head == null) {
+        if (this.isEmpty()) {
             return "[ ]";
         }
 
         StringBuilder sb = new StringBuilder("[ ");
-        Node curr = head;
+        Node curr = this.head;
 
         while (curr != null) {
             sb.append(curr.data);
@@ -272,6 +249,24 @@ public class LinkedList {
     }
 
     public void display() {
-        System.out.println(toString());
+        System.out.println(this.toString());
+    }
+
+    public void reverse() {
+        if (this.isEmpty() || this.n == 1)
+            return;
+
+        Node prev = null, curr = this.head;
+
+        while (curr != null) {
+            Node next = curr.next;
+
+            curr.next = prev;
+
+            prev = curr;
+            curr = next;
+        }
+
+        this.head = prev;
     }
 }
