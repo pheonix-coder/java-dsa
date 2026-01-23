@@ -1,20 +1,40 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
 if [ -z "${1-}" ]; then
-  echo "Usage: $0 package/ClassName [args...]"
-  echo "Example: $0 examples/HelloWorld arg1 arg2"
+  echo "Usage: $0 src/package/ClassName.java [args...]"
+  echo "Example: $0 src/array/ContainsDuplicate.java"
   exit 1
 fi
-TARGET="$1"; shift
-# convert package/ClassName -> package.ClassName
-CLASS_NAME="${TARGET//\//.}"
+
+TARGET="$1"
+shift
+
 SRC_DIR="src"
 OUT_DIR="bin"
+
+# Ensure it's a .java file
+if [[ "$TARGET" != *.java ]]; then
+  echo "Error: Please provide a .java file path"
+  exit 1
+fi
+
+# Remove src/ prefix
+REL_PATH="${TARGET#${SRC_DIR}/}"
+
+# Remove .java extension
+REL_PATH="${REL_PATH%.java}"
+
+# Convert path to fully qualified class name
+CLASS_NAME="${REL_PATH//\//.}"
+
 mkdir -p "$OUT_DIR"
-# compile all java sources under src
+
+# Compile all Java files (safe & simple)
 FILES=$(find "$SRC_DIR" -name '*.java' 2>/dev/null || true)
 if [ -n "$FILES" ]; then
   javac -d "$OUT_DIR" $FILES
 fi
-# run
+
+# Run the class
 exec java -cp "$OUT_DIR" "$CLASS_NAME" "$@"
