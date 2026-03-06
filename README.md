@@ -4,4 +4,4 @@ java dsa practice
 `package/filename` - `category/problemname`
 
 2. Run:
-`./scripts/run package/filename`
+`./scripts/run src/package/filename`
