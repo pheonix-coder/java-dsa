@@ -2,7 +2,7 @@ package stack;
 
 public class Main {
     public static void main(String[] args) {
-        Stack stack = new Stack();
+        ImplementedStack stack = new ImplementedStack();
 
         System.out.println("=== Test isEmpty & size on empty stack ===");
         System.out.println("Is empty? " + stack.isEmpty()); // true

@@ -1,6 +1,6 @@
 package stack;
 
-public class Stack {
+public class ImplementedStack {
     private int top = -1;
     private int capacity = 5;
     private int[] arr = new int[capacity];
@@ -59,4 +59,5 @@ public class Stack {
     public void display() {
         System.out.println(this.toString());
     }
+
 }
