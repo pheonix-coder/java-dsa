@@ -2,6 +2,8 @@ package stack;
 
 import java.util.*;
 
+// TC - O(n)
+// SC - O(n)
 public class RemoveConsecutiveSubsequences {
     public static int[] remove(int[] arr) {
         Stack<Integer> st = new Stack<>();

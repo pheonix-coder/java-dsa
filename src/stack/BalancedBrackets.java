@@ -2,6 +2,8 @@ package stack;
 
 import java.util.*;
 
+// TC - O(n)
+// SC - O(n)
 public class BalancedBrackets {
     public static int isBalanced(String str) {
         Stack<Character> st = new Stack();
